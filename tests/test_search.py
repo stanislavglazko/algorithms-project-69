@@ -32,13 +32,29 @@ def test_generating_index():
     index = generate_index_for_docs_collection(checking_documents)
 
     assert index == {
-        'I': {'doc1': 0.23104906018664842},
-        'cant': {'doc1': 0.23104906018664842},
-        'shoot': {'doc1': 0.0, 'doc2': 0.0},
-        'Dont': {'doc2': 0.13862943611198905},
-        'at': {'doc2': 0.13862943611198905},
-        'me': {'doc2': 0.13862943611198905}
+        "I": {"doc1": 0.10034333188799373},
+        "cant": {"doc1": 0.10034333188799373},
+        "shoot": {"doc1": 0.0, 'doc2': 0.0},
+        "Dont": {"doc2": 0.06020599913279624},
+        "at": {"doc2": 0.06020599913279624},
+        "me": {"doc2": 0.06020599913279624}
         }
+
+
+def test_tf_idf():
+    docs = []
+    doc = {"id": "rabbit_here", "text": ""}
+    for _ in range(97):
+        doc["text"] += " yes"
+    for _ in range(3):
+        doc["text"] += " rabbit"
+    for i in range(9999):
+        docs.append({"id": f"{i}", "text": "no"})
+    docs.append(doc)
+
+    index = generate_index_for_docs_collection(docs)
+
+    assert index["rabbit"] == {'rabbit_here': 0.12}
 
 
 def create_docs() -> list[dict]:

@@ -23,11 +23,7 @@ def generate_index_for_docs_collection(
     length_of_docs_collection = len(documents)
     for document in documents:
         generate_index_for_doc(document, index, lengths_of_docs)
-    for word, docs_with_word in index.items():
-        idf = math.log(length_of_docs_collection / len(docs_with_word))
-        for doc, number in docs_with_word.items():
-            tf = number / lengths_of_docs[doc]
-            index[word][doc] = tf * idf
+    calculate_tf_idf(index, length_of_docs_collection, lengths_of_docs)
     return index
 
 
@@ -49,6 +45,18 @@ def generate_index_for_doc(
 
 def get_processed_word(word: str) -> str:
     return "".join(re.findall(r'\w+', word))
+
+
+def calculate_tf_idf(
+    index: defaultdict,
+    length_of_docs_collection: defaultdict,
+    lengths_of_docs: int,
+) -> None:
+    for word, docs_with_word in index.items():
+        idf = math.log10(length_of_docs_collection / len(docs_with_word))
+        for doc, number in docs_with_word.items():
+            tf = number / lengths_of_docs[doc]
+            index[word][doc] = tf * idf
 
 
 def generate_docs_with_target_words(
