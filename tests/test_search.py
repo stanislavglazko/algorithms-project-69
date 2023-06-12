@@ -1,6 +1,5 @@
 from search_engine.scripts.search_engine import (
     generate_index_for_docs_collection,
-    fuzzy_search,
     search,
 )
 
@@ -16,7 +15,7 @@ def test_relevant_search():
 def test_fuzzy_search():
     checking_documents = create_docs_for_fyzzy_search()
 
-    result = fuzzy_search(checking_documents, "shoot at me")
+    result = search(checking_documents, "shoot at me")
 
     assert result == ["doc2", "doc4", "doc1"]
 
