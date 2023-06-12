@@ -1,4 +1,4 @@
-from search_engine.scripts.search_engine import (
+from search_engine.search_engine import (
     generate_index_for_docs_collection,
     search,
 )

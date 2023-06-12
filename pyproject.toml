@@ -15,7 +15,7 @@ pytest-cov = "^4.1.0"
 flake8 = "^6.0.0"
 
 [tool.poetry.scripts]
-search-engine = "search_engine.scripts.search_engine:search"
+search-engine = "search_engine.search_engine:search"
 
 [build-system]
 requires = ["poetry-core"]
