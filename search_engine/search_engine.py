@@ -6,7 +6,7 @@ from collections import defaultdict
 def search(documents: list[dict], target_string: str) -> list[str]:
     print(target_string, "TARGET_STRING")
     for document in documents:
-        print(document["id"], document["name"], "DOCCCCC")
+        print(document["id"], document["text"], "DOCCCCC")
     index = generate_index_for_docs_collection(documents)
     docs_with_target_words = generate_docs_with_target_words(
         target_string, index
