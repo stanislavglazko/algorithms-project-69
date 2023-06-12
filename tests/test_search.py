@@ -18,7 +18,7 @@ def test_search_with_empty_docs():
 def create_docs() -> list[dict]:
     doc1 = {
         "id": "doc1",
-        "text": "I can't shoot straight unless I've had a pint!",
+        "text": "I can't shoot! straight unless I've had a pint!",
     }
     doc2 = {
         "id": "doc2",
