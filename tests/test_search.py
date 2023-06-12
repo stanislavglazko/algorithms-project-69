@@ -1,4 +1,8 @@
-from search_engine.scripts.search_engine import fuzzy_search, search
+from search_engine.scripts.search_engine import (
+    generate_index_for_docs_collection,
+    fuzzy_search,
+    search,
+)
 
 
 def test_relevant_search():
@@ -23,6 +27,21 @@ def test_search_with_empty_docs():
     assert result == []
 
 
+def test_generating_index():
+    checking_documents = create_docs_to_test_index()
+
+    index = generate_index_for_docs_collection(checking_documents)
+
+    assert index == {
+        "I": ["doc1"],
+        "cant": ["doc1"],
+        "shoot": ["doc1", "doc2"],
+        "Dont": ["doc2"],
+        "at": ["doc2"],
+        "me": ["doc2"],
+    }
+
+
 def create_docs() -> list[dict]:
     doc1 = {
         "id": "doc1",
@@ -34,6 +53,18 @@ def create_docs() -> list[dict]:
     }
     doc3 = {"id": "doc3", "text": "I'm your shooter."}
     return [doc1, doc2, doc3]
+
+
+def create_docs_to_test_index() -> list[dict]:
+    doc1 = {
+        "id": "doc1",
+        "text": "I can't shoot!",
+    }
+    doc2 = {
+        "id": "doc2",
+        "text": "Don't shoot at me.",
+    }
+    return [doc1, doc2]
 
 
 def create_docs_for_fyzzy_search() -> list[dict]:
