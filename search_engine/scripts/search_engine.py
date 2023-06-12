@@ -4,21 +4,10 @@ from collections import defaultdict
 
 
 def search(documents: list[dict], target_string: str) -> list[str]:
-    target_words = target_string.split()
-    docs_with_target_words = {}
     index = generate_index_for_docs_collection(documents)
-    for target_word in target_words:
-        if target_word not in index:
-            continue
-        docs_with_target_word = index[target_word]
-        for doc_id, word_repetition in docs_with_target_word.items():
-            if doc_id in docs_with_target_words:
-                docs_with_target_words[doc_id][0] += 1
-                docs_with_target_words[doc_id][1] += word_repetition
-            else:
-                docs_with_target_words[doc_id] = []
-                docs_with_target_words[doc_id].append(1)
-                docs_with_target_words[doc_id].append(word_repetition)
+    docs_with_target_words = generate_docs_with_target_words(
+        target_string, index
+    )
     if docs_with_target_words:
         return get_reverse_sorted_by_item_list_from_dict(docs_with_target_words)
     return []
@@ -37,7 +26,6 @@ def generate_index_for_docs_collection(
         for doc, number in docs_with_word.items():
             tf = number / lengths_of_docs[doc]
             index[word][doc] = tf * idf
-
     return index
 
 
@@ -59,6 +47,26 @@ def generate_index_for_doc(
 
 def get_processed_word(word: str) -> str:
     return "".join(re.findall(r'\w+', word))
+
+
+def generate_docs_with_target_words(
+    target_string: str,
+    index: dict[str, dict],
+) -> dict[str, list]:
+    target_words = target_string.split()
+    docs_with_target_words = {}
+    for target_word in target_words:
+        if target_word not in index:
+            continue
+        for doc_id, word_repetition in index[target_word].items():
+            if doc_id in docs_with_target_words:
+                docs_with_target_words[doc_id][0] += 1
+                docs_with_target_words[doc_id][1] += word_repetition
+            else:
+                docs_with_target_words[doc_id] = []
+                docs_with_target_words[doc_id].append(1)
+                docs_with_target_words[doc_id].append(word_repetition)
+    return docs_with_target_words
 
 
 def get_reverse_sorted_by_item_list_from_dict(target_dict: dict[str, list]):
