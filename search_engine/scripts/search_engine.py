@@ -9,7 +9,9 @@ def search(documents: list[dict], target_string: str) -> list[str]:
         target_string, index
     )
     if docs_with_target_words:
-        return get_reverse_sorted_by_item_list_from_dict(docs_with_target_words)
+        return convert_docs_with_target_words_to_sorted_list_of_docs(
+            docs_with_target_words
+        )
     return []
 
 
@@ -69,7 +71,9 @@ def generate_docs_with_target_words(
     return docs_with_target_words
 
 
-def get_reverse_sorted_by_item_list_from_dict(target_dict: dict[str, list]):
+def convert_docs_with_target_words_to_sorted_list_of_docs(
+    target_dict: dict[str, list],
+) -> list[str]:
     return [
         k for k, _ in sorted(
             target_dict.items(), key=lambda item: item[1], reverse=True
