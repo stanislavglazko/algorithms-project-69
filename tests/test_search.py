@@ -33,12 +33,12 @@ def test_generating_index():
     index = generate_index_for_docs_collection(checking_documents)
 
     assert index == {
-        "I": ["doc1"],
-        "cant": ["doc1"],
-        "shoot": ["doc1", "doc2"],
-        "Dont": ["doc2"],
-        "at": ["doc2"],
-        "me": ["doc2"],
+        "I": {"doc1": 1},
+        "cant": {"doc1": 1},
+        "shoot": {"doc1": 1, "doc2": 2},
+        "Dont": {"doc2": 1},
+        "at": {"doc2": 1},
+        "me": {"doc2": 1},
     }
 
 
@@ -62,7 +62,7 @@ def create_docs_to_test_index() -> list[dict]:
     }
     doc2 = {
         "id": "doc2",
-        "text": "Don't shoot at me.",
+        "text": "Don't shoot shoot at me.",
     }
     return [doc1, doc2]
 
