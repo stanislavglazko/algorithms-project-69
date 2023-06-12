@@ -8,6 +8,7 @@ def search(documents: list[dict], target_string: str) -> list[str]:
     docs_with_target_words = generate_docs_with_target_words(
         target_string, index
     )
+    print(docs_with_target_words, "HHHHHHH")
     if docs_with_target_words:
         return convert_docs_with_target_words_to_sorted_list_of_docs(
             docs_with_target_words
@@ -70,12 +71,9 @@ def generate_docs_with_target_words(
             continue
         for doc_id, word_repetition in index[target_word].items():
             if doc_id in docs_with_target_words:
-                docs_with_target_words[doc_id][0] += 1
-                docs_with_target_words[doc_id][1] += word_repetition
+                docs_with_target_words[doc_id] += word_repetition
             else:
-                docs_with_target_words[doc_id] = []
-                docs_with_target_words[doc_id].append(1)
-                docs_with_target_words[doc_id].append(word_repetition)
+                docs_with_target_words[doc_id] = word_repetition
     return docs_with_target_words
 
 
@@ -84,6 +82,6 @@ def convert_docs_with_target_words_to_sorted_list_of_docs(
 ) -> list[str]:
     return [
         k for k, _ in sorted(
-            target_dict.items(), key=lambda item: item[1], reverse=True
+            target_dict.items(), key=lambda item: item, reverse=True
             )
         ]
