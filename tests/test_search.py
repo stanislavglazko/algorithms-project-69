@@ -1,12 +1,12 @@
 from search_engine.scripts.search_engine import search
 
 
-def test_search():
+def test_relevant_search():
     checking_documents = create_docs()
 
     result = search(checking_documents, "shoot")
 
-    assert result == ["doc1", "doc2"]
+    assert result == ["doc2", "doc1"]
 
 
 def test_search_with_empty_docs():
