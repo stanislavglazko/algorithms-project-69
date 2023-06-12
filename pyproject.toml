@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "search-engine"
+version = "0.1.0"
+description = ""
+authors = ["stanislavglazko <stanislav.glazko@dualbootpartners.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.3.2"
+pytest-cov = "^4.1.0"
+flake8 = "^6.0.0"
+
+[tool.poetry.scripts]
+search-engine = "search_engine.scripts.search_engine:search"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
