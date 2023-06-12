@@ -31,14 +31,6 @@ def test_generating_index():
 
     index = generate_index_for_docs_collection(checking_documents)
 
-    # assert index == {
-    #     "I": {"doc1": 1},
-    #     "cant": {"doc1": 1},
-    #     "shoot": {"doc1": 1, "doc2": 2},
-    #     "Dont": {"doc2": 1},
-    #     "at": {"doc2": 1},
-    #     "me": {"doc2": 1},
-    # }
     assert index == {
         'I': {'doc1': 0.23104906018664842},
         'cant': {'doc1': 0.23104906018664842},
