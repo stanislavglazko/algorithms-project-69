@@ -9,6 +9,23 @@ def search(documents: list[dict], target_word: str) -> list[str]:
     return []
 
 
+def generate_index_for_docs_collection(documents: list[dict]) -> dict:
+    index = defaultdict(dict)
+    for document in documents:
+        generate_index_for_doc(document, index)
+    return index
+
+
+def generate_index_for_doc(document: dict, index: defaultdict) -> dict:
+    splited_text = document["text"].split()
+    for word in splited_text:
+        processed_word = get_processed_word(word)
+        if document["id"] not in index[processed_word]:
+            index[processed_word][document["id"]] = 1
+        else:
+            index[processed_word][document["id"]] += 1
+
+
 def get_processed_word(word: str) -> str:
     return "".join(re.findall(r'\w+', word))
 
@@ -40,23 +57,6 @@ def fuzzy_search(documents: list[dict], target_string: str) -> list[str]:
     if docs_with_target_words:
         return get_reverse_sorted_by_item_list_from_dict(docs_with_target_words)
     return []
-
-
-def generate_index_for_docs_collection(documents: list[dict]) -> dict:
-    index = defaultdict(dict)
-    for document in documents:
-        generate_index_for_doc(document, index)
-    return index
-
-
-def generate_index_for_doc(document: dict, index: defaultdict) -> dict:
-    splited_text = document["text"].split()
-    for word in splited_text:
-        processed_word = get_processed_word(word)
-        if document["id"] not in index[processed_word]:
-            index[processed_word][document["id"]] = 1
-        else:
-            index[processed_word][document["id"]] += 1
 
 
 if __name__ == '__main__':
