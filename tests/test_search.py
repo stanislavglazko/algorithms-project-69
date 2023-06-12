@@ -13,7 +13,7 @@ def test_relevant_search():
 
 
 def test_fuzzy_search():
-    checking_documents = create_docs_for_fyzzy_search()
+    checking_documents = create_docs_for_fuzzy_search()
 
     result = search(checking_documents, "shoot at me")
 
@@ -66,7 +66,7 @@ def create_docs_to_test_index() -> list[dict]:
     return [doc1, doc2]
 
 
-def create_docs_for_fyzzy_search() -> list[dict]:
+def create_docs_for_fuzzy_search() -> list[dict]:
     checking_documents = create_docs()
     new_doc = {
         "id": "doc4",
