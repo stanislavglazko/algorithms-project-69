@@ -79,7 +79,3 @@ def convert_docs_with_target_words_to_sorted_list_of_docs(
             target_dict.items(), key=lambda item: item[1], reverse=True
             )
         ]
-
-
-if __name__ == '__main__':
-    search()
