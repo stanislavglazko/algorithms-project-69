@@ -1,7 +1,4 @@
-from search_engine.search_engine import (
-    generate_index_for_docs_collection,
-    search,
-)
+from search_engine.search_engine import generate_index, search
 
 
 def test_relevant_search():
@@ -10,6 +7,14 @@ def test_relevant_search():
     result = search(checking_documents, "shoot")
 
     assert result == ["doc2", "doc1"]
+
+
+def test_search_non_existent_string():
+    checking_documents = create_docs()
+
+    result = search(checking_documents, "crazy")
+
+    assert result == []
 
 
 def test_fuzzy_search():
@@ -29,7 +34,7 @@ def test_search_with_empty_docs():
 def test_generating_index():
     checking_documents = create_docs_to_test_index()
 
-    index = generate_index_for_docs_collection(checking_documents)
+    index = generate_index(checking_documents)
 
     assert index == {
         "I": {"doc1": 0.0752574989159953},
@@ -53,7 +58,7 @@ def test_tf_idf():
         docs.append({"id": f"{i}", "text": "no"})
     docs.append(doc)
 
-    index = generate_index_for_docs_collection(docs)
+    index = generate_index(docs)
 
     assert index["rabbit"] == {'rabbit_here': 0.12}
 

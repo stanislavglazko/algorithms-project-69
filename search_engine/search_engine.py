@@ -4,85 +4,78 @@ from collections import defaultdict
 
 
 def search(documents: list[dict], target_string: str) -> list[str]:
-    index = generate_index_for_docs_collection(documents)
-    docs_with_target_words = generate_docs_with_target_words(
+    index = generate_index(documents)
+    docs_with_target_words = find_docs_with_target_words(
         target_string, index
     )
     if docs_with_target_words:
-        return convert_docs_with_target_words_to_sorted_list_of_docs(
-            docs_with_target_words
-        )
+        return get_docs_names_in_relevant_order(docs_with_target_words)
     return []
 
 
-def generate_index_for_docs_collection(
-    documents: list[dict],
-) -> dict[str, dict]:
+def generate_index(documents: list[dict]) -> dict[str, dict]:
     index = defaultdict(dict)
-    lengths_of_docs = defaultdict(int)
-    length_of_docs_collection = len(documents)
+    number_of_words_in_documents = defaultdict(int)
+    number_of_documents = len(documents)
     for document in documents:
-        generate_index_for_doc(document, index, lengths_of_docs)
-    calculate_tf_idf(index, length_of_docs_collection, lengths_of_docs)
+        generate_index_for_doc(document, index, number_of_words_in_documents)
+    calculate_tf_idf(index, number_of_documents, number_of_words_in_documents)
     return index
 
 
 def generate_index_for_doc(
     document: dict[str, str],
     index: defaultdict,
-    lengths_of_docs: dict[str, int],
+    number_of_words_in_documents: dict[str, int],
 ) -> None:
     document_id, document_text = document["id"], document["text"]
-    splited_text = re.findall(r'\w+', document_text)
-    lengths_of_docs[document_id] = len(splited_text)
-    for processed_word in splited_text:
-        if document_id not in index[processed_word]:
-            index[processed_word][document_id] = 1
+    words = re.findall(r'\w+', document_text)
+    number_of_words_in_documents[document_id] = len(words)
+    for word in words:
+        if document_id not in index[word]:
+            index[word][document_id] = 1
         else:
-            index[processed_word][document_id] += 1
-
-
-def get_processed_word(word: str) -> str:
-    return "".join(re.findall(r'\w+', word))
+            index[word][document_id] += 1
 
 
 def calculate_tf_idf(
     index: defaultdict,
-    length_of_docs_collection: defaultdict,
-    lengths_of_docs: int,
+    number_of_documents: defaultdict,
+    number_of_words_in_documents: int,
 ) -> None:
     for word, docs_with_word in index.items():
-        idf = math.log10(length_of_docs_collection / len(docs_with_word))
-        for doc, number in docs_with_word.items():
-            tf = number / lengths_of_docs[doc]
-            index[word][doc] = tf * idf
+        idf = math.log10(number_of_documents / len(docs_with_word))
+        for document, number_of_target_word_in_doc in docs_with_word.items():
+            tf = number_of_target_word_in_doc / number_of_words_in_documents[
+                document
+            ]
+            index[word][document] = tf * idf
 
 
-def generate_docs_with_target_words(
+def find_docs_with_target_words(
     target_string: str,
     index: dict[str, dict],
 ) -> dict[str, list]:
     target_words = target_string.split()
-    docs_with_target_words = {}
+    docs_with_target_words = defaultdict(list)
     for target_word in target_words:
         if target_word not in index:
             continue
-        for doc_id, word_repetition in index[target_word].items():
+        for doc_id, tf_idf in index[target_word].items():
             if doc_id in docs_with_target_words:
                 docs_with_target_words[doc_id][0] += 1
-                docs_with_target_words[doc_id][1] *= word_repetition
+                docs_with_target_words[doc_id][1] *= tf_idf
             else:
-                docs_with_target_words[doc_id] = []
                 docs_with_target_words[doc_id].append(1)
-                docs_with_target_words[doc_id].append(word_repetition)
+                docs_with_target_words[doc_id].append(tf_idf)
     return docs_with_target_words
 
 
-def convert_docs_with_target_words_to_sorted_list_of_docs(
+def get_docs_names_in_relevant_order(
     target_dict: dict[str, list],
 ) -> list[str]:
     return [
-        k for k, _ in sorted(
+        document_name for document_name, _ in sorted(
             target_dict.items(), key=lambda item: item[1], reverse=True
         )
     ]
