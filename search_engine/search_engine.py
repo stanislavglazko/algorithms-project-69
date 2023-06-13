@@ -84,5 +84,5 @@ def convert_docs_with_target_words_to_sorted_list_of_docs(
     return [
         k for k, _ in sorted(
             target_dict.items(), key=lambda item: item[1], reverse=True
-            )
-        ]
+        )
+    ]
