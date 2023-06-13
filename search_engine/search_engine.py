@@ -76,7 +76,7 @@ def generate_docs_with_target_words(
         for doc_id, word_repetition in index[target_word].items():
             if doc_id in docs_with_target_words:
                 docs_with_target_words[doc_id][0] += 1
-                docs_with_target_words[doc_id][1] += word_repetition
+                docs_with_target_words[doc_id][1] *= word_repetition
             else:
                 docs_with_target_words[doc_id] = []
                 docs_with_target_words[doc_id].append(1)
