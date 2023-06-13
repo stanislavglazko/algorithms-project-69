@@ -37,10 +37,11 @@ def generate_index_for_doc(
     lengths_of_docs: dict[str, int],
 ) -> None:
     document_id, document_text = document["id"], document["text"]
-    splited_text = document_text.split()
+    # splited_text = document_text.split()
+    splited_text = re.findall(r'\w+', document_text)
     lengths_of_docs[document_id] = len(splited_text)
-    for word in splited_text:
-        processed_word = get_processed_word(word)
+    for processed_word in splited_text:
+        # processed_word = get_processed_word(word)
         if document_id not in index[processed_word]:
             index[processed_word][document_id] = 1
         else:
